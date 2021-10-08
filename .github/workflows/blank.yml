@@ -15,7 +15,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-   macos:
+  macos:
     # The type of runner that the job will run on
     runs-on: macos-10.15
     # Steps represent a sequence of tasks that will be executed as part of the job
@@ -48,7 +48,7 @@ jobs:
           ./gradlew publishToMavenLocal
           ./gradlew -Pskiko.native.enabled=true macosX64Test
           ./gradlew -Pskiko.native.enabled=true publishToMavenLocal
-   linux:
+  linux:
     runs-on: ubuntu-20.04
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -88,15 +88,14 @@ jobs:
           sudo apt-get install ninja-build fontconfig libfontconfig1-dev libglu1-mesa-dev libxrandr-dev zip -y
           ./gradlew -i jvmTest
           ./gradlew publishToMavenLocal
-   js:
-     runs-on: ubuntu-20.04
-     # Steps represent a sequence of tasks that will be executed as part of the job
-     steps:
-       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-       - uses: actions/checkout@v2
-       - name: Change wrapper permissions
-         run: chmod +x ./gradlew
-
+  js:
+    runs-on: ubuntu-20.04
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
       - name: Gradle cache
         uses: actions/cache@v2
         with:
@@ -107,35 +106,34 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      # Runs a set of commands using the runners shell
 
-       - uses: actions/setup-java@v2
-         with:
-           distribution: 'adopt'
-           java-version: '11'
-       # Runs a set of commands using the runners shell
 
-       
-       - shell: bash
-         run: |
-           cd ./skiko
-           sudo apt-get update -y
-           sudo apt-get install binutils build-essential -y
-           sudo apt-get install software-properties-common -y
-           sudo apt-get install python git curl wget -y
-           if [ -d ./emsdk ]; then
-             cd ./emsdk
-             git pull
-           else
-             git clone https://github.com/emscripten-core/emsdk.git
-             cd ./emsdk
-           fi
-           ./emsdk install 2.0.29
-           ./emsdk activate 2.0.29
-           source ./emsdk_env.sh
-           cd ..
-           ./gradlew -Pskiko.wasm.enabled=true jsTest
-           ./gradlew -Pskiko.wasm.enabled=true publishSkikoWasmRuntimePublicationToMavenLocal
-   windows:
+      - shell: bash
+        run: |
+          cd ./skiko
+          sudo apt-get update -y
+          sudo apt-get install binutils build-essential -y
+          sudo apt-get install software-properties-common -y
+          sudo apt-get install python git curl wget -y
+          if [ -d ./emsdk ]; then
+            cd ./emsdk
+            git pull
+          else
+            git clone https://github.com/emscripten-core/emsdk.git
+            cd ./emsdk
+          fi
+          ./emsdk install 2.0.29
+          ./emsdk activate 2.0.29
+          source ./emsdk_env.sh
+          cd ..
+          ./gradlew -Pskiko.wasm.enabled=true jsTest
+          ./gradlew -Pskiko.wasm.enabled=true publishSkikoWasmRuntimePublicationToMavenLocal
+  windows:
     runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
