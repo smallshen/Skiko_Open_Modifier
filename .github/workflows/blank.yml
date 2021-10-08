@@ -22,6 +22,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -39,6 +41,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
@@ -66,6 +70,8 @@ jobs:
      steps:
        # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
        - uses: actions/checkout@v2
+       - name: Change wrapper permissions
+         run: chmod +x ./gradlew
        - uses: actions/setup-java@v2
          with:
            distribution: 'adopt'
